@@ -20,10 +20,11 @@ import br.edu.atitus.api_sample.services.UserServices;
 public class AuthController {
 	
 		private final UserServices service;
-	
-		public AuthController() {
+		
+		// Injeção da dependência via método construtor
+		public AuthController(UserServices service) {
 			super();
-			this.service = new UserServices();
+			this.service = service;
 		}
 
 

@@ -1,9 +1,24 @@
 package br.edu.atitus.api_sample.services;
 
-import br.edu.atitus.api_sample.entities.UserEntity;
+import org.springframework.stereotype.Service;
 
+import br.edu.atitus.api_sample.entities.UserEntity;
+import br.edu.atitus.api_sample.repositories.UserRepository;
+
+@Service
 public class UserServices {
 	
+	private final UserRepository repository;
+	
+	
+	
+	public UserServices(UserRepository repository) {
+		super();
+		this.repository = repository;
+	}
+
+
+
 	public UserEntity save(UserEntity user) throws Exception {
 		if (user == null)
 			throw new Exception("Objeto não pode ser nulo");
@@ -21,12 +36,14 @@ public class UserServices {
 				|| user.getPassword().isEmpty()
 				|| user.getPassword().length() < 8)
 			throw new Exception("Passoword inválido");
-		//TODO Validar a força da senha (Caracteres maiúsculo, minúsculo e numeráis)
+		//TODO Validar a força da senha (Caracteres maiúsculo, minúsculo e numerais)
 		
 		if (user.getType() == null)
 			throw new Exception("Tipo de usuário inválido");
+		if (repository.existsByEmail(user.getEmail()))
+			throw new Exception ("Já existe um usuário com esse nome");
 		
-		//TODO Invocar método save da camada repository
+		repository.save(user);
 		
 		return user;
 	}
