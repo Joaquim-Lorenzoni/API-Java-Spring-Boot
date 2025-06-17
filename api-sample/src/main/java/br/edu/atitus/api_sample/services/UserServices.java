@@ -48,6 +48,7 @@ public class UserServices implements UserDetailsService{
 			throw new Exception("Tipo de usuário inválido");
 		if (repository.existsByEmail(user.getEmail()))
 			throw new Exception ("Já existe um usuário com esse nome");
+		
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		
 		repository.save(user);
